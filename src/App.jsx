@@ -8,6 +8,8 @@ function App() {
 
   return (
     <>
+    <h1>Dog Memory Game</h1>
+    <h4>Click on each dog once and only once</h4>
     <Gameboard></Gameboard>
     </>
   )
