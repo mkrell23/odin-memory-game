@@ -1,22 +1,60 @@
 import Card from "./card";
 import '../styles/gameboard.css'
+import { useEffect, useState } from "react";
 
 
 export default function Gameboard(){
 
+    const [ pictures, setPictures ] = useState([])
+    const [ clicked, setClicked ] = useState([])
+
     function onClick(e){
-        console.log(e.target.attributes)
-        console.log(e.target.getAttribute('cardkey'))
+        const cardClicked = e.target.getAttribute('cardKey')
+        if (clicked.indexOf(cardClicked) < 0 ){
+            setClicked([...clicked, cardClicked])
+            console.log("NEW!")
+            shuffle(cards)
+        }
+        else{
+            console.log("LOST")
+        }
     }
 
+    useEffect(() => {
+        fetch("https://dog.ceo/api/breeds/image/random/6")
+            .then( response => response.json() )
+            .then( response => setPictures(response.message))
+    }, [])
+
+    function createCards(pictures){
+        let cardsArray = []
+        for (let i = 0; i < pictures.length; i++) {
+            const picture = pictures[i];
+            const card = <Card onClick={onClick} key={i} cardKey={i} imgSrc={picture}/>
+            cardsArray.push(card)
+        }
+        
+        return cardsArray
+    }
+
+    function shuffle(array){
+        for (let i = array.length -1; i > 0; i--){
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    const cards = createCards(pictures)
+    shuffle(cards)
+
+    if (clicked.length == 6 ){
+        console.log("YOU WON!!")
+    }
+    
     return(
         <>
         <div className="board">
-            <Card onClick={onClick} cardKey="1" imgSrc="https://images.dog.ceo/breeds/groenendael/n02105056_3107.jpg"/>
-            <Card onClick={onClick} cardKey="2" imgSrc="https://images.dog.ceo/breeds/hound-afghan/n02088094_392.jpg"/>
-            <Card onClick={onClick} cardKey="3" imgSrc="https://images.dog.ceo/breeds/pinscher-miniature/n02107312_5665.jpg"/>
-            <Card onClick={onClick} cardKey="4" imgSrc="https://images.dog.ceo/breeds/rottweiler/n02106550_10481.jpg"/>
-            <Card onClick={onClick} cardKey="5" imgSrc="https://images.dog.ceo/breeds/sharpei/noel.jpg"/>
+          {cards}
         </div>
         </>
     )
