@@ -7,15 +7,19 @@ export default function Gameboard(){
 
     const [ pictures, setPictures ] = useState([])
     const [ clicked, setClicked ] = useState([])
+    const [ hiScore, setHiScore ] = useState(0)
 
     function onClick(e){
         const cardClicked = e.target.getAttribute('cardKey')
         if (clicked.indexOf(cardClicked) < 0 ){
             setClicked([...clicked, cardClicked])
             console.log("NEW!")
+            clicked.length >= hiScore ? setHiScore(clicked.length + 1) : null
             if (clicked.length >= 5 ){
                 console.log("YOU WON!!")
                 alert("You won!")
+                setClicked([])
+                newGame()
             }
             else{
                 shuffle(cards)
@@ -23,6 +27,9 @@ export default function Gameboard(){
         }
         else{
             console.log("LOST")
+             alert("You lost!")
+             setClicked([])
+             newGame()
         }
     }
 
@@ -54,10 +61,18 @@ export default function Gameboard(){
         }
     }
 
-    const cards = createCards(pictures)
+    function newGame(){
+        getPictures()
+    }
+
+    let cards = createCards(pictures)
     
     return(
         <>
+        <div className="score">
+            <h5>Score: {clicked.length}</h5>
+            <h5>High Score: {hiScore}</h5>
+        </div>
         <div className="board">
           {cards}
         </div>

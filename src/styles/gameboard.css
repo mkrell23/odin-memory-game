@@ -10,3 +10,8 @@ img {
     width: 250px;
     height: auto;
 }
+
+.score{
+    display: flex;
+    justify-content: space-around;
+}
