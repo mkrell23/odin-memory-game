@@ -6,4 +6,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: lightgray;
+    box-shadow: 8px 9px 11px rgb(17, 0, 0);
 }
