@@ -1,12 +1,12 @@
 import '../styles/card.css'
 
-export default function Card({imgSrc}){
+export default function Card({imgSrc, onClick, cardKey}){
 
 
     return(
         <>
-        <div className="cardBorder">
-            <img src={imgSrc}/>
+        <div onClick={onClick} className="cardBorder" cardkey={cardKey}>
+            <img src={imgSrc} cardkey={cardKey}/>
         </div>
         </>
     )
