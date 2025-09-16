@@ -13,7 +13,13 @@ export default function Gameboard(){
         if (clicked.indexOf(cardClicked) < 0 ){
             setClicked([...clicked, cardClicked])
             console.log("NEW!")
-            shuffle(cards)
+            if (clicked.length >= 5 ){
+                console.log("YOU WON!!")
+                alert("You won!")
+            }
+            else{
+                shuffle(cards)
+            }        
         }
         else{
             console.log("LOST")
@@ -21,9 +27,7 @@ export default function Gameboard(){
     }
 
     useEffect(() => {
-        fetch("https://dog.ceo/api/breeds/image/random/6")
-            .then( response => response.json() )
-            .then( response => setPictures(response.message))
+        getPictures()
     }, [])
 
     function createCards(pictures){
@@ -33,8 +37,14 @@ export default function Gameboard(){
             const card = <Card onClick={onClick} key={i} cardKey={i} imgSrc={picture}/>
             cardsArray.push(card)
         }
-        
+        shuffle(cardsArray)
         return cardsArray
+    }
+
+    async function getPictures(){
+        const rawPictures = await fetch("https://dog.ceo/api/breeds/image/random/6")
+        const pictures = await rawPictures.json()
+        setPictures(pictures.message)
     }
 
     function shuffle(array){
@@ -45,11 +55,6 @@ export default function Gameboard(){
     }
 
     const cards = createCards(pictures)
-    shuffle(cards)
-
-    if (clicked.length == 6 ){
-        console.log("YOU WON!!")
-    }
     
     return(
         <>
