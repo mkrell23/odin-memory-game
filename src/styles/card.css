@@ -9,3 +9,8 @@
     background-color: lightgray;
     box-shadow: 8px 9px 11px rgb(17, 0, 0);
 }
+
+.cardBorder:hover{
+    transform: scale(1.08);
+    transition-duration: 200ms;
+}
